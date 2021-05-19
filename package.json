@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "bnr start",
+    "build": "run-s build:server build:client",
+    "build:client": "bnr webpack:prod:client",
+    "build:server": "bnr webpack:prod:server",
     "lint": "eslint --debug src/",
     "lint:write": "eslint --debug src/ --fix",
     "prettier": "prettier --write"
@@ -21,7 +24,26 @@
         "RESOURCE_URL_PATH_PREFIX": "/assets/",
         "SERVER_ENV": "development"
       }
+    },
+    "webpack:prod:server": {
+      "command": "webpack --config ./config/webpack.server.config.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "production",
+        "RESOURCE_URL_PATH_PREFIX": "/assets/"
+      }
+    },
+    "webpack:prod:client": {
+      "command": "webpack --config ./config/webpack.client.config.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "production",
+        "RESOURCE_URL_PATH_PREFIX": "/assets/"
+      }
     }
+  },
+  "engines": {
+    "node": "^14.x"
   },
   "husky": {
     "hooks": {
@@ -89,6 +111,7 @@
     "husky": "^6.0.0",
     "ip": "^1.1.5",
     "nodemon": "^1.18.10",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.3.0",
     "react-dev-utils": "^5.0.2",
     "react-hot-loader": "^4.6.5",
@@ -102,10 +125,11 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "connected-react-router": "^6.4.0",
+    "helmet": "^3.21.2",
     "react": "16.10.2",
     "react-dom": "16.10.2",
     "react-router-config": "^5.1.1",
-    "react-router-dom": "^5.2.0",
-    "connected-react-router": "^6.4.0"
+    "react-router-dom": "^5.2.0"
   }
 }

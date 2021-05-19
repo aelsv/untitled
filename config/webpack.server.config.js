@@ -2,6 +2,7 @@ const paths = require('./paths');
 const { getEnvironment } = require('./env');
 const { DefinePlugin, ProgressPlugin } = require('webpack');
 const nodeExternals = require('webpack-node-externals');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const env = getEnvironment();
 const { IS_DEVELOPMENT, NODE_ENV } = env.raw;
@@ -48,6 +49,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new DefinePlugin(env.definedPlugin),
     new ProgressPlugin({
       entries: false,

@@ -107,13 +107,12 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new CaseSensitivePathsPlugin(),
     new DefinePlugin(env.definedPlugin),
     new ProgressPlugin({
       entries: false,
       activeModules: false,
     }),
-  ],
+  ].concat(IS_DEVELOPMENT ? new CleanWebpackPlugin() : []),
   performance: { hints: false },
 };
