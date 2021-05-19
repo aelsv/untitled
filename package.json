@@ -11,13 +11,13 @@
   },
   "betterScripts": {
     "start": {
-      "command": "webpack --config ./config/webpack.client.config.js",
+      "command": "nodemon --watch src/server --inspect src/server/index.js",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "HOST": "127.0.0.1",
         "PORT": 3030,
-        "SSR_API_HOST": "",
+        "SSR_API_HOST": "http://localhost:8081",
         "RESOURCE_URL_PATH_PREFIX": "/assets/",
         "SERVER_ENV": "development"
       }
@@ -64,12 +64,14 @@
     "@babel/register": "^7.4.4",
     "@babel/runtime": "^7.3.1",
     "@hot-loader/react-dom": "^16.12.0",
+    "@types/node": "^15.3.0",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.1.0",
     "better-npm-run": "^0.1.1",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
+    "chalk": "^2.4.1",
     "clean-webpack-plugin": "^3.0.0",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -80,7 +82,11 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "express": "^4.17.0",
+    "express-useragent": "^1.0.15",
     "husky": "^6.0.0",
+    "ip": "^1.1.5",
+    "nodemon": "^1.18.10",
     "prettier": "^2.3.0",
     "react-dev-utils": "^5.0.2",
     "react-hot-loader": "^4.6.5",
