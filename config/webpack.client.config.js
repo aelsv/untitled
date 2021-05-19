@@ -87,7 +87,7 @@ module.exports = {
       /* JSX */
       {
         test: /\.(js|jsx|tsx|ts)$/,
-        include: paths.appSrc,
+        include: paths.source,
         loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
@@ -100,6 +100,7 @@ module.exports = {
                 corejs: 3,
               },
             ],
+            '@babel/react',
           ],
         },
       },
