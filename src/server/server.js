@@ -5,7 +5,7 @@ import useragent from 'express-useragent';
 
 /* Run modes */
 import development from './environments/development';
-// import production from './environments/production';
+import production from './environments/production';
 
 /* @Constants */
 import { getContextValue, initServerContext, getAllContext } from '../service/context';
@@ -20,7 +20,7 @@ app.use(useragent.express());
 if (getContextValue('IS_DEVELOPMENT_BUILD')) {
   development(app, getAllContext());
 } else {
-  /* production(app, getAllContext()); */
+  production(app, getAllContext());
 }
 
 app.listen(PORT, (err) => {
