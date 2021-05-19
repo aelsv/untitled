@@ -1,0 +1,135 @@
+{
+  "name": "untitled",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "bnr start",
+    "build": "run-s build:server build:client",
+    "build:client": "bnr webpack:prod:client",
+    "build:server": "bnr webpack:prod:server",
+    "lint": "eslint --debug src/",
+    "lint:write": "eslint --debug src/ --fix",
+    "prettier": "prettier --write"
+  },
+  "betterScripts": {
+    "start": {
+      "command": "nodemon --watch src/server --inspect src/server/index.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "development",
+        "HOST": "127.0.0.1",
+        "PORT": 3030,
+        "SSR_API_HOST": "http://localhost:8081",
+        "RESOURCE_URL_PATH_PREFIX": "/assets/",
+        "SERVER_ENV": "development"
+      }
+    },
+    "webpack:prod:server": {
+      "command": "webpack --config ./config/webpack.server.config.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "production",
+        "RESOURCE_URL_PATH_PREFIX": "/assets/"
+      }
+    },
+    "webpack:prod:client": {
+      "command": "webpack --config ./config/webpack.client.config.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "production",
+        "RESOURCE_URL_PATH_PREFIX": "/assets/"
+      }
+    }
+  },
+  "engines": {
+    "node": "^14.x"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.(js|jsx)": [
+      "npm run lint:write",
+      "git add"
+    ],
+    "*.scss": [
+      "npm run prettier",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aelsv/untitled.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aelsv/untitled/issues"
+  },
+  "homepage": "https://github.com/aelsv/untitled#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/polyfill": "7.2.5",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@babel/register": "^7.4.4",
+    "@babel/runtime": "^7.3.1",
+    "@hot-loader/react-dom": "^16.12.0",
+    "@types/node": "^15.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "app-root-path": "^2.2.1",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.1.0",
+    "better-npm-run": "^0.1.1",
+    "case-sensitive-paths-webpack-plugin": "^2.3.0",
+    "chalk": "^2.4.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "express": "^4.17.0",
+    "express-useragent": "^1.0.15",
+    "global-tunnel-ng": "^2.7.1",
+    "husky": "^6.0.0",
+    "ip": "^1.1.5",
+    "nodemon": "^1.18.10",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.3.0",
+    "react-dev-utils": "^5.0.2",
+    "react-hot-loader": "^4.6.5",
+    "terser-webpack-plugin": "^1.2.3",
+    "typescript": "^4.1.3",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-middleware": "^3.5.2",
+    "webpack-hot-middleware": "^2.24.3",
+    "webpack-hot-server-middleware": "^0.6.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "connected-react-router": "^6.4.0",
+    "helmet": "^3.21.2",
+    "react": "16.10.2",
+    "react-dom": "16.10.2",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "^5.2.0"
+  }
+}
