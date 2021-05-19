@@ -57,7 +57,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'react/prop-types': 'off',
     'no-console': 0,
-    'comma-dangle': 0,
     'global-require': 0,
     'import/imports-first': 0,
     'import/no-unresolved': 0,
@@ -92,10 +91,10 @@ module.exports = {
       { avoidEscape: true, allowTemplateLiterals: false }
     ],
     'max-len': ['error', { code: 120 }],
+    'comma-dangle': [2, 'always-multiline'],
     'prettier/prettier': [
       'error',
       {
-        trailingComma: 'es5',
         tabWidth: 2,
         printWidth: 120,
         semi: true,
@@ -103,6 +102,7 @@ module.exports = {
         singleQuote: true,
         bracketSpacing: true,
         arrowParens: 'always',
+        trailingComma: 'all',
       },
     ],
   },
