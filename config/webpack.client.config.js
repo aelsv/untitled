@@ -87,7 +87,7 @@ module.exports = {
       /* JSX */
       {
         test: /\.(js|jsx|tsx|ts)$/,
-        include: paths.appSrc,
+        include: paths.source,
         loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
@@ -100,19 +100,19 @@ module.exports = {
                 corejs: 3,
               },
             ],
+            '@babel/react',
           ],
         },
       },
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new CaseSensitivePathsPlugin(),
     new DefinePlugin(env.definedPlugin),
     new ProgressPlugin({
       entries: false,
       activeModules: false,
     }),
-  ],
+  ].concat(IS_DEVELOPMENT ? new CleanWebpackPlugin() : []),
   performance: { hints: false },
 };
