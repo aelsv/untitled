@@ -92,6 +92,7 @@ module.exports = {
     ],
     'max-len': ['error', { code: 120 }],
     'comma-dangle': [2, 'always-multiline'],
+    'implicit-arrow-linebreak': 0,
     'prettier/prettier': [
       'error',
       {

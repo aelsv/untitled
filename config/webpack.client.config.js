@@ -1,13 +1,16 @@
+const path = require('path');
 const paths = require('./paths');
+const { getClientEnvironment } = require('./env');
 const TerserPlugin = require('terser-webpack-plugin');
-const { DefinePlugin, ProgressPlugin } = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const ignoredFiles = require('react-dev-utils/ignoredFiles');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const { getEnvironment } = require('./env');
+const { DefinePlugin, ProgressPlugin, HotModuleReplacementPlugin } = require('webpack');
 
-const env = getEnvironment();
-const { RESOURCE_URL_PATH_PREFIX, IS_DEVELOPMENT, IS_PRODUCTION, NODE_ENV } = env.raw;
+const env = getClientEnvironment();
+const { IS_DEVELOPMENT, IS_PRODUCTION, NODE_ENV } = env.raw;
+const RESOURCE_URL_PATH_PREFIX = env.raw.RESOURCE_URL_PATH_PREFIX || '/';
 const webpackHotEntry = 'webpack-hot-middleware/client?reload=false&dynamicPublicPath=true';
 
 module.exports = {
@@ -37,35 +40,28 @@ module.exports = {
     },
   }),
   entry: {
-    app: [require.resolve('./polyfills'), paths.entryClientJS].concat(
-      IS_DEVELOPMENT ? ['react-hot-loader/patch', webpackHotEntry] : [],
-    ),
+    app: [require.resolve('./polyfills'), 'react-hot-loader/patch', webpackHotEntry, paths.entryClientJS],
   },
   output: {
-    filename: IS_DEVELOPMENT ? '[name].[hash].js' : '[name].[chunkhash].js',
-    chunkFilename: IS_DEVELOPMENT ? '[name].[hash].js' : '[name].[chunkhash].js',
+    filename: '[name].[hash].js',
+    chunkFilename: '[name].[hash].js',
     path: paths.outputFolder,
     publicPath: RESOURCE_URL_PATH_PREFIX,
   },
   resolve: {
-    modules: ['node_modules'].concat(paths.source),
+    modules: ['node_modules', paths.appNodeModules].concat(
+      env.raw.NODE_PATH.split(path.delimiter).filter(Boolean),
+      paths.source,
+    ),
     alias: {
       'react-dom': '@hot-loader/react-dom',
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
   optimization: {
-    runtimeChunk: {
-      name: 'runtime',
-    },
     splitChunks: {
-      chunks: 'all',
       cacheGroups: {
-        vendors: {
-          name: 'vendors',
-          test: /[\\/]node_modules[\\/]/,
-          enforce: true,
-        },
+        vendors: false,
       },
     },
     ...(IS_PRODUCTION && {
@@ -75,7 +71,9 @@ module.exports = {
           cache: true,
           parallel: true,
           terserOptions: {
-            output: { comments: false },
+            output: {
+              comments: false,
+            },
           },
           sourceMap: true,
         }),
@@ -86,33 +84,26 @@ module.exports = {
     rules: [
       /* JSX */
       {
-        test: /\.(js|jsx|tsx|ts)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         include: paths.source,
-        loader: 'babel-loader',
         exclude: /node_modules/,
+        loader: require.resolve('babel-loader'),
         options: {
-          presets: [
-            [
-              '@babel/env',
-              {
-                useBuiltIns: 'entry',
-                modules: 'commonjs',
-                corejs: 3,
-              },
-            ],
-            '@babel/react',
-          ],
+          cacheDirectory: true,
+          plugins: ['react-hot-loader/babel'],
         },
       },
     ],
   },
   plugins: [
     new CaseSensitivePathsPlugin(),
+    new LoadablePlugin(),
     new DefinePlugin(env.definedPlugin),
     new ProgressPlugin({
       entries: false,
       activeModules: false,
     }),
-  ].concat(IS_DEVELOPMENT ? new CleanWebpackPlugin() : []),
+    ...(IS_DEVELOPMENT && [new CleanWebpackPlugin(), new HotModuleReplacementPlugin()]),
+  ],
   performance: { hints: false },
 };

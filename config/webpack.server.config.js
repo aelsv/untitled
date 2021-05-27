@@ -1,10 +1,11 @@
 const paths = require('./paths');
-const { getEnvironment } = require('./env');
+const LoadablePlugin = require('@loadable/webpack-plugin');
+const { getServerEnvironment } = require('./env');
 const { DefinePlugin, ProgressPlugin } = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const env = getEnvironment();
+const env = getServerEnvironment();
 const { IS_DEVELOPMENT, NODE_ENV } = env.raw;
 
 module.exports = {
@@ -55,6 +56,7 @@ module.exports = {
       entries: false,
       activeModules: false,
     }),
+    ...(IS_DEVELOPMENT && [new LoadablePlugin()]),
   ],
   performance: { hints: false },
 };
