@@ -8,19 +8,17 @@ import development from './environments/development';
 import production from './environments/production';
 
 /* @Constants */
-import { getContextValue, initServerContext, getAllContext } from '../service/context';
-
-initServerContext(process.env);
+import { IS_DEVELOPMENT } from 'config';
 
 const app = express();
-const { PORT } = process.env;
+const PORT = process.env.PORT || 3030;
 
 app.use(useragent.express());
 
-if (getContextValue('IS_DEVELOPMENT_BUILD')) {
-  development(app, getAllContext());
+if (IS_DEVELOPMENT) {
+  development(app);
 } else {
-  production(app, getAllContext());
+  production(app);
 }
 
 app.listen(PORT, (err) => {
@@ -28,7 +26,7 @@ app.listen(PORT, (err) => {
     console.log(err);
   }
 
-  if (getContextValue('IS_DEVELOPMENT_BUILD')) {
+  if (IS_DEVELOPMENT) {
     console.log(`You can view ${chalk.cyan.bold(process.env.npm_package_name)} in the browser.`);
     console.log(`Your local address: ${chalk.yellow.bold(`http://${ip.address()}:${PORT}`)}\n`);
   }
