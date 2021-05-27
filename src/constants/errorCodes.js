@@ -1,0 +1,5 @@
+export const ERROR_CODES = {
+  UNKNOWN: 0,
+  REDIRECTED: 300,
+  SSR_REDIRECTED: 301,
+};
